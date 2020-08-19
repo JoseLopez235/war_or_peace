@@ -5,7 +5,7 @@ require './lib/card'
 
 class DeckTest < Minitest::Test
 
-  def test_should_exsit
+  def test_should_exsists
     card_1 = Card.new(:diamond, 'Queen', 12)
     card_2 = Card.new(:club, 5, 5)
     card_3 = Card.new(:heart, 'Ace', 14)
