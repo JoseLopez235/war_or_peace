@@ -37,4 +37,14 @@ class TurnTest < Minitest::Test
     assert_equal player1, turn.player1
     assert_equal player2, turn.player2
   end
+
+  def test_if_spoils_of_war_comes_back_empty
+    deck1 = Deck.new([@card1, @card2, @card5, @card8])
+    deck2 = Deck.new([@card3, @card4, @card6, @card7])
+    player1 = Player.new("Megan", deck1)
+    player2 = Player.new("Aurora", deck2)
+    turn = Turn.new(player1, player2)
+
+    assert_equal [], turn.spoils_of_war
+  end
 end
