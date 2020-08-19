@@ -65,4 +65,15 @@ class DeckTest < Minitest::Test
     deck.remove_card
     assert_equal [card_2, card_3], deck.cards
   end
+
+  def test_should_add_new_card_at_the_end_of_the_deck
+    card_1 = Card.new(:diamond, 'Queen', 12)
+    card_2 = Card.new(:club, 5, 5)
+    card_3 = Card.new(:heart, 'Ace', 14)
+    cards = [card_2, card_3]
+    deck = Deck.new(cards)
+
+    deck.add_card(card_1)
+    assert_equal [card_2, card_3, card_1], deck.cards
+  end
 end
