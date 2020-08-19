@@ -37,4 +37,21 @@ class PlayerTest < Minitest::Test
 
     assert_equal deck, player_1.deck
   end
+
+  def test_should_return_true_if_lost
+    card_1 = Card.new(:diamond, 'Queen', 12)
+    card_2 = Card.new(:club, 5, 5)
+    card_3 = Card.new(:heart, 'Ace', 14)
+    cards = [card_1, card_2, card_3]
+    deck = Deck.new(cards)
+    player_1 = Player.new("Jose", deck)
+
+    assert_equal false, player_1.has_lost?
+    player_1.deck.remove_card
+    assert_equal false, player_1.has_lost?
+    player_1.deck.remove_card
+    assert_equal false, player_1.has_lost?
+    player_1.deck.remove_card
+    assert_equal true, player_1.has_lost?
+  end
 end
