@@ -7,4 +7,8 @@ class Deck
   def rank_of_card_at(index)
     @cards[index]
   end
+
+  def high_ranking_cards
+    @cards.find_all {|card| card.rank >= 11}
+  end
 end
