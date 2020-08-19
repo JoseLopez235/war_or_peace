@@ -7,4 +7,17 @@ class Turn
     @spoils_of_war = []
   end
 
+  def type
+    if @player1.deck.cards[0].rank > @player2.deck.cards[0].rank || @player1.deck.cards[0].rank < @player2.deck.cards[0].rank
+      basic
+    end
+  end
+
+  def basic
+    if @player1.deck.cards[0].rank > @player2.deck.cards[0].rank
+      :basic
+    elsif @player1.deck.cards[0].rank < @player2.deck.cards[0].rank
+      :basic
+    end
+  end
 end
