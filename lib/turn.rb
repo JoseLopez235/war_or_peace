@@ -41,6 +41,11 @@ class Turn
     end
   end
 
+  def award_spoils(winner)
+    winner.deck.cards << @spoils_of_war
+    winner.deck.cards.flatten!
+  end
+
   def basic
     if @player1.deck.cards[0].rank > @player2.deck.cards[0].rank
       @player1
