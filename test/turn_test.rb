@@ -95,4 +95,22 @@ class TurnTest < Minitest::Test
 
     assert_equal [@card2, @card5, @card8, @card1, @card3], turn.player1.deck.cards
   end
+
+  def test_should_award_spoils_to_winner_war_type
+    deck1 = Deck.new([@card1, @card2, @card5, @card8])
+    deck2 = Deck.new([@card4, @card3, @card6, @card7])
+    player1 = Player.new("Megan", deck1)
+    player2 = Player.new("Aurora", deck2)
+    turn = Turn.new(player1, player2)
+
+    assert_equal :war, turn.type
+
+    winner = turn.winner
+    turn.pile_cards
+    turn.award_spoils(winner)
+    expected = [@card7,@card1, @card2, @card5,@card4, @card3, @card6]
+
+
+    assert_equal expected, turn.player2.deck.cards
+  end
 end

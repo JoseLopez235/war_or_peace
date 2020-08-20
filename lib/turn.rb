@@ -25,9 +25,19 @@ class Turn
       @player1.deck.remove_card
       @player2.deck.remove_card
     elsif type == :mutually_assured_destruction
-
+      war_and_mutually_assured_destruction_deleter
     elsif type == :war
+      @spoils_of_war << @player1.deck.cards[0..2]
+      @spoils_of_war << @player2.deck.cards[0..2]
+      @spoils_of_war.flatten!
+      war_and_mutually_assured_destruction_deleter
+    end
+  end
 
+  def war_and_mutually_assured_destruction_deleter
+    3.times do
+      @player1.deck.remove_card
+      @player2.deck.remove_card
     end
   end
 
@@ -35,19 +45,26 @@ class Turn
     if type == :basic
       basic
     elsif type == :mutually_assured_destruction
-
+      return "No Winner"
     elsif type == :war
-
+      war
     end
   end
 
   def award_spoils(winner)
-    winner.deck.cards << @spoils_of_war
-    winner.deck.cards.flatten!
+    @spoils_of_war.each { |card| winner.deck.add_card(card)}
   end
 
   def basic
     if @player1.deck.cards[0].rank > @player2.deck.cards[0].rank
+      @player1
+    else
+      @player2
+    end
+  end
+
+  def war
+    if @player1.deck.cards[2].rank > @player2.deck.cards[2].rank
       @player1
     else
       @player2
