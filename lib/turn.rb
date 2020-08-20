@@ -18,6 +18,18 @@ class Turn
     end
   end
 
+  def pile_cards
+    if type == :basic
+      @spoils_of_war << @player1.deck.cards[0]
+      @spoils_of_war << @player2.deck.cards[0]
+      @player1.deck.remove_card
+      @player2.deck.remove_card
+    elsif type == :mutually_assured_destruction
+
+    elsif type == :war
+
+    end
+  end
 
   def winner
     if type == :basic
