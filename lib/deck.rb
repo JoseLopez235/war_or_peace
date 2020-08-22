@@ -5,10 +5,10 @@ class Deck
   end
 
   def rank_of_card_at(index)
-    if index > @cards.length
+    if index >= @cards.length
       nil
     else
-      @cards[index]
+      @cards[index].rank
     end
   end
 

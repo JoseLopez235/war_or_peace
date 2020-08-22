@@ -64,11 +64,8 @@ deck2 = Deck.new([card27, card28, card29, card30, card31, card32, card33, card34
   card35, card36, card37, card38, card39, card40, card41, card42, card43, card44,
   card45, card46, card47, card48, card49, card50, card51, card52].shuffle)
 
-  deck3 = Deck.new([card1, card2, card3, card4, card5, card6])
-  deck4 = Deck.new([card14])
-
-player1 = Player.new("Megan", deck3)
-player2 = Player.new("Aurora", deck4)
+player1 = Player.new("Megan", deck1)
+player2 = Player.new("Aurora", deck2)
 
 war = Turn.new(player1, player2)
 war.start

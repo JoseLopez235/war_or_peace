@@ -8,14 +8,14 @@ class Turn
   end
 
   def type
-    if @player1.deck.cards[0].rank != @player2.deck.cards[0].rank
+    if @player1.deck.rank_of_card_at(0) != @player2.deck.rank_of_card_at(0)
       :basic
     elsif @player1.deck.rank_of_card_at(2).nil? || @player2.deck.rank_of_card_at(2).nil?
       :no_war
-    elsif @player1.deck.cards[0].rank == @player2.deck.cards[0].rank &&
-      @player1.deck.cards[2].rank == @player2.deck.cards[2].rank
+    elsif @player1.deck.rank_of_card_at(0) == @player2.deck.rank_of_card_at(0) &&
+      @player1.deck.rank_of_card_at(2) == @player2.deck.rank_of_card_at(2)
       :mutually_assured_destruction
-    elsif @player1.deck.cards[0].rank == @player2.deck.cards[0].rank
+    elsif @player1.deck.rank_of_card_at(0) == @player2.deck.rank_of_card_at(0)
       :war
     end
   end
@@ -51,11 +51,11 @@ class Turn
   end
 
   def award_spoils(winner)
-    @spoils_of_war.each { |card| winner.deck.add_card(card)}
+    @spoils_of_war.shuffle.each { |card| winner.deck.add_card(card)}
   end
 
   def basic
-    if @player1.deck.cards[0].rank > @player2.deck.cards[0].rank
+    if @player1.deck.rank_of_card_at(0) > @player2.deck.rank_of_card_at(0)
       @player1
     else
       @player2
@@ -63,7 +63,7 @@ class Turn
   end
 
   def war
-    if @player1.deck.cards[2].rank > @player2.deck.cards[2].rank
+    if @player1.deck.rank_of_card_at(2) > @player2.deck.rank_of_card_at(2)
       @player1
     else
       @player2
@@ -78,9 +78,19 @@ class Turn
     input = gets.chomp.upcase
     count = 0
     if input == "GO"
-      while count != 20
-        player = winner
-        pile_cards
+      while count != 1000001
+        if count == 1000000
+          p "*~*~*~* DRAW *~*~*~*"
+          break
+        end
+
+        if @player1.has_lost?
+          p "*~*~*~* #{@player2.name} has won the game! *~*~*~*"
+          break
+        elsif @player2.has_lost?
+          p "*~*~*~* #{@player1.name} has won the game! *~*~*~*"
+          break
+        end
 
         if type == :no_war && @player1.deck.rank_of_card_at(2).nil?
           p "*~*~*~* #{@player2.name} has won the game! *~*~*~*"
@@ -90,15 +100,18 @@ class Turn
           break
         end
 
+        player = winner
+        pile_cards
+
         if type == :basic
-          p "#{player.name} won #{@spoils_of_war.length} cards"
+          p "Turn #{count}: #{player.name} won #{@spoils_of_war.length} cards"
           @player1.deck.remove_card
           @player2.deck.remove_card
         elsif type == :war
-          p "WAR - #{player.name} won #{@spoils_of_war.length} cards"
+          p "WAR - Turn #{count}: #{player.name} won #{@spoils_of_war.length} cards"
           war_and_mutually_assured_destruction_deleter
         elsif type == :mutually_assured_destruction
-          p "*mutually_assured_destruction* #{player} 6 cards removed from play"
+          p "Turn #{count}: *mutually_assured_destruction* #{player} 6 cards removed from play"
           war_and_mutually_assured_destruction_deleter
         end
 
@@ -106,12 +119,6 @@ class Turn
           award_spoils(player)
         end
 
-        if @player1.has_lost?
-          p "*~*~*~* #{@player2.name} has won the game! *~*~*~*"
-          break
-          p "*~*~*~* #{@player2.name} has won the game! *~*~*~*"
-          break
-        end
         count += 1
       end
     else
